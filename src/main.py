@@ -5,7 +5,7 @@ from services.transaccion_service import flujo_cambio_divisas, ver_transacciones
 def menu_usuario(usuario):
     while True:
         print(f"\n=== Menú Usuario: {usuario.nombre} ===")
-        print("1. Cambiar dólares a soles")
+        print("1. Cambio de Moneda")
         print("2. Ver mis transacciones")
         print("3. Cerrar sesión")
 
