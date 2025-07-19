@@ -1,21 +1,18 @@
 from models.transaccion import Transaccion
+from models.moneda import Moneda
+from models.tasa_cambio import TasaCambio
 import datetime
 
 TASAS_CAMBIO = {
-    "USD": {"nombre": "Dólares", "simbolo": "$", "tasa": 3.70},
-    "CLP": {"nombre": "Pesos Chilenos", "simbolo": "CLP$", "tasa": 0.0041},
-    "COP": {"nombre": "Pesos Colombianos", "simbolo": "COP$", "tasa": 0.00098},
-    "BOB": {"nombre": "Pesos Bolivianos", "simbolo": "Bs.", "tasa": 0.54},
-    "PEN": {"nombre": "Soles", "simbolo": "S/", "tasa": 1.0}
+    "USD": TasaCambio("USD", "Dólares", "$", 3.70),
+    "CLP": TasaCambio("CLP", "Pesos Chilenos", "CLP$", 0.0041),
+    "COP": TasaCambio("COP", "Pesos Colombianos", "COP$", 0.00098),
+    "BOB": TasaCambio("BOB", "Pesos Bolivianos", "Bs.", 0.54),
+    "PEN": TasaCambio("PEN", "Soles", "S/", 1.0),
 }
 
-OPCIONES_MONEDA = {
-    "1": "USD",
-    "2": "CLP",
-    "3": "COP",
-    "4": "BOB",
-    "5": "PEN"
-}
+OPCIONES_MONEDA = {"1": "USD", "2": "CLP", "3": "COP", "4": "BOB", "5": "PEN"}
+
 
 def flujo_cambio_divisas(usuario):
     while True:
@@ -42,43 +39,51 @@ def flujo_cambio_divisas(usuario):
             print("Opción de moneda destino no válida.\n")
             continue
 
-        moneda_origen = OPCIONES_MONEDA[moneda_origen_input]
-        moneda_destino = OPCIONES_MONEDA[moneda_destino_input]
+        moneda_origen_codigo = OPCIONES_MONEDA[moneda_origen_input]
+        moneda_destino_codigo = OPCIONES_MONEDA[moneda_destino_input]
 
-        if moneda_origen == moneda_destino:
+        if moneda_origen_codigo == moneda_destino_codigo:
             print("No puedes cambiar a la misma moneda.\n")
             continue
 
         try:
-            simbolo_origen = TASAS_CAMBIO[moneda_origen]['simbolo']
-            simbolo_destino = TASAS_CAMBIO[moneda_destino]['simbolo']
-            nombre_origen = TASAS_CAMBIO[moneda_origen]['nombre']
-            nombre_destino = TASAS_CAMBIO[moneda_destino]['nombre']
+            info_origen = TASAS_CAMBIO[moneda_origen_codigo]
+            info_destino = TASAS_CAMBIO[moneda_destino_codigo]
 
-            monto_origen = float(input(f"Ingrese el monto en {nombre_origen} ({simbolo_origen}): "))
+            monto_origen = float(
+                input(
+                    f"Ingrese el monto en {info_origen['nombre']} ({info_origen['simbolo']}): "
+                )
+            )
 
-            tasa_origen = TASAS_CAMBIO[moneda_origen]['tasa']
-            tasa_destino = TASAS_CAMBIO[moneda_destino]['tasa']
+            tasa_origen = info_origen["tasa"]
+            tasa_destino = info_destino["tasa"]
+
+            if tasa_origen is None or tasa_destino is None:
+                print(
+                    "Error: La tasa de cambio no está disponible para una de las monedas seleccionadas.\n"
+                )
+                continue
 
             monto_destino = monto_origen * (tasa_origen / tasa_destino)
 
             fecha = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+            moneda_origen = Moneda(info_origen["simbolo"], info_origen["nombre"])
+            moneda_destino = Moneda(info_destino["simbolo"], info_destino["nombre"])
+
             nueva_transaccion = Transaccion(
-                monto_origen,
-                monto_destino,
-                fecha,
-                simbolo_origen,
-                simbolo_destino,
-                nombre_origen,
-                nombre_destino
+                monto_origen, monto_destino, fecha, moneda_origen, moneda_destino
             )
             usuario.agregar_transaccion(nueva_transaccion)
 
-            print(f"\nCambio exitoso: {simbolo_origen}{monto_origen:.2f} -> {simbolo_destino}{monto_destino:.2f}")
-            print(f"({nombre_origen} -> {nombre_destino})\n")
+            print(
+                f"\nCambio exitoso: {info_origen['simbolo']}{monto_origen:.2f} -> {info_destino['simbolo']}{monto_destino:.2f}"
+            )
+            print(f"({info_origen['nombre']} -> {info_destino['nombre']})\n")
         except ValueError:
             print("Por favor ingresa un número válido.\n")
+
 
 def ver_transacciones(usuario):
     print("\n=== Mis Transacciones ===")

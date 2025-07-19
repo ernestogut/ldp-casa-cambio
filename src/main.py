@@ -1,6 +1,7 @@
 from services.usuario_service import registrar_usuario, mostrar_usuarios, iniciar_sesion
 from services.transaccion_service import flujo_cambio_divisas, ver_transacciones
 
+
 def menu_usuario(usuario):
     while True:
         print(f"\n=== Menú Usuario: {usuario.nombre} ===")
@@ -24,14 +25,17 @@ def menu_usuario(usuario):
 def menu_admin():
     while True:
         print("\n=== Menú Administrador ===")
-        print("1. Ver usuarios registrados")
-        print("2. Cerrar sesión")
+        print("1. Registrar usuario")
+        print("2. Ver usuarios registrados")
+        print("3. Cerrar sesión")
 
         opcion = input("Elige una opción: ")
 
         if opcion == "1":
-            mostrar_usuarios()
+            registrar_usuario()
         elif opcion == "2":
+            mostrar_usuarios()
+        elif opcion == "3":
             print("Sesión de administrador cerrada.\n")
             break
         else:
@@ -50,7 +54,7 @@ def main():
         if opcion == "1":
             usuario_actual = iniciar_sesion()
             if usuario_actual:
-                if usuario_actual.nombre.lower() == "admin":
+                if usuario_actual.rol.slug == "administrador":
                     menu_admin()
                 else:
                     menu_usuario(usuario_actual)
