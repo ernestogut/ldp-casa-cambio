@@ -1,5 +1,5 @@
 from services.usuario_service import registrar_usuario, mostrar_usuarios, iniciar_sesion
-from services.transaccion_service import flujo_cambio_divisas, ver_transacciones
+from services.transaccion_service import flujo_cambio_divisas, ver_transacciones , actualizar_tasas
 
 
 def menu_usuario(usuario):
@@ -27,7 +27,8 @@ def menu_admin():
         print("\n=== Menú Administrador ===")
         print("1. Registrar usuario")
         print("2. Ver usuarios registrados")
-        print("3. Cerrar sesión")
+        print("3. Actualizar tasas de cambio")
+        print("4. Cerrar sesión")
 
         opcion = input("Elige una opción: ")
 
@@ -36,6 +37,8 @@ def menu_admin():
         elif opcion == "2":
             mostrar_usuarios()
         elif opcion == "3":
+            actualizar_tasas()
+        elif opcion == "4":
             print("Sesión de administrador cerrada.\n")
             break
         else:

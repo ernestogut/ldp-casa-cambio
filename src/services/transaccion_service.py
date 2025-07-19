@@ -13,6 +13,21 @@ TASAS_CAMBIO = {
 
 OPCIONES_MONEDA = {"1": "USD", "2": "CLP", "3": "COP", "4": "BOB", "5": "PEN"}
 
+def actualizar_tasas():
+    print("\n=== Actualizar Tasas de Cambio ===")
+    for codigo, tasa in TASAS_CAMBIO.items():
+        print(f"{codigo}: {tasa.nombre} ({tasa.simbolo}) - Valor actual: {tasa.valor} PEN")
+        try:
+            nuevo_valor = input(f"Ingrese nuevo valor para {codigo} o presione Enter para mantener {tasa.valor}: ")
+            if nuevo_valor.strip():
+                tasa.valor = float(nuevo_valor)
+                print(f"✔ Tasa actualizada para {codigo}.")
+            else:
+                print(f"✔ Tasa de {codigo} no modificada.")
+        except ValueError:
+            print("⚠ Valor inválido. No se actualizó esta tasa.")
+
+
 
 def flujo_cambio_divisas(usuario):
     while True:
