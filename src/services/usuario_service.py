@@ -69,7 +69,7 @@ def registrar_usuario():
             continue
         break
 
-    contrasena = getpass.getpass("Contraseña: ")
+    contrasena = input("Contraseña: ")
     rol_input = input("Rol (1: Administrador, 2: Usuario): ").strip()
     rol_id, rol_nombre = obtener_rol(rol_input)
 
