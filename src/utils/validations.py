@@ -30,3 +30,7 @@ def validar_cuenta_bancaria(cuenta_bancaria: str) -> bool:
     if len(cuenta_bancaria) < 10:
         return False
     return True
+
+
+def email_existe(email, usuarios) -> bool:
+    return any(usuario.email == email for usuario in usuarios)
