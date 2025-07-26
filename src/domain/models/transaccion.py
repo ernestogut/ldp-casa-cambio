@@ -1,5 +1,5 @@
 from .moneda import Moneda
-from utils.validations import validar_monto_origen_destino
+from src.utils.validations import validar_monto_origen_destino
 
 
 class Transaccion:
@@ -12,7 +12,7 @@ class Transaccion:
         moneda_destino: Moneda,
     ):
         if not validar_monto_origen_destino(monto_origen, monto_destino):
-            raise ValueError("El monto no puede ser negativo.")
+            print("El monto no puede ser negativo.")
         self.monto_origen = monto_origen
         self.monto_destino = monto_destino
         self.fecha = fecha
