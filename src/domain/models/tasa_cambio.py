@@ -1,12 +1,14 @@
+from .moneda import Moneda
+
+
 class TasaCambio:
-    def __init__(self, codigo, nombre, simbolo, tasa):
-        self.codigo = codigo
-        self.nombre = nombre
-        self.simbolo = simbolo
+    def __init__(self, moneda_origen: Moneda, moneda_destino: Moneda, tasa: float):
+        self.moneda_origen = moneda_origen
+        self.moneda_destino = moneda_destino
         self.tasa = tasa
 
     def __str__(self):
-        return f"{self.nombre} ({self.simbolo}) - Tasa: {self.tasa}"
+        return f"{self.moneda_origen} -> {self.moneda_destino} | Tasa: {self.tasa}"
 
     def __getitem__(self, key):
         return getattr(self, key, None)

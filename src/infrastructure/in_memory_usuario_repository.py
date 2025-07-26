@@ -1,5 +1,6 @@
 from src.domain.models.usuario import Usuario
 from src.domain.models.rol import Rol
+from src.domain.models.metodo_deposito import MetodoDeposito
 from src.domain.ports.usuario_repository import (
     UsuarioRepository as UsuarioRepositoryPort,
 )
@@ -13,6 +14,12 @@ class InMemoryUsuarioRepository(UsuarioRepositoryPort):
                 nombre="Sistema",
                 dni="12345678",
                 cuenta_bancaria="1234567890",
+                telefono="987654321",
+                metodo_deposito_fav=MetodoDeposito(
+                    id=1,
+                    nombre="Transferencia bancaria",
+                    descripcion="Depósito a través de transferencia bancaria",
+                ),
                 email="sistema@gmail.com",
                 contrasena="root",
                 rol=Rol(id_rol=1, nombre="Administrador"),
